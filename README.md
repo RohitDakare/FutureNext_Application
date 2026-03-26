@@ -1,74 +1,47 @@
-# Career Compass Backend
+# FutureNext | AI Career Guidance Platform
 
-Career Compass is a FastAPI-based backend for an AI-powered career guidance platform. It provides RESTful APIs for user authentication, career path recommendations, and skill gap analysis using Google Gemini.
+FutureNext is a comprehensive AI-powered career counseling platform. It features a **NestJS Backend**, a **Next.js Frontend**, and a **Flutter Mobile App**. 🧭
 
-## Features
+## 🚀 Overview
+- **AI Guidance**: Uses Google Gemini to generate dynamic MCQ questions and personalized career reports.
+- **RIASEC Model**: Built on the Holland Code (RIASEC) interest model to match students with the best-fit careers.
+- **Full Stack**: Features a robust REST API, a premium glassmorphic web dashboard, and a sleek mobile experience.
 
-- **User Authentication**: Secure user registration and login with JWT-based authentication
-- **Career Recommendations**: AI-powered career path suggestions based on user interests and skills
-- **Skill Gap Analysis**: Identify skill gaps and recommend learning resources
-- **Database Integration**: PostgreSQL database with SQLAlchemy ORM
-- **AI Integration**: Google Gemini API for intelligent career guidance
+## 🛠 Tech Stack
+- **Backend**: NestJS, Prisma ORM, PostgreSQL (via Supabase), Google Gemini SDK.
+- **Frontend**: Next.js 15+, React 19, Vanilla CSS (Premium Glassmorphism).
+- **Mobile**: Flutter, Dart, SharedPreferences, http.
 
-## Prerequisites
+## 📦 Project Structure
+- `/backend`: NestJS source code and Prisma schema.
+- `/frontend`: Next.js web application.
+- `/lib`: Flutter mobile source code (root level).
 
-- Python 3.8+
-- PostgreSQL 13+
-- Google Gemini API Key
+## 🚀 Deployment
+To deploy this project for public use, follow our **[Deployment Guide](./deployment_guide.md)** which covers:
+1.  **Database**: Setting up Supabase.
+2.  **Backend**: Hosting on Render.
+3.  **Frontend**: Hosting on Vercel.
+4.  **Mobile**: Building for Google Play Store.
 
-## Installation
+## 🛠 Local Setup
 
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd backend
-   ```
+### Backend
+1. `cd backend`
+2. `npm install`
+3. Configure `.env` with `DATABASE_URL` and `GEMINI_API_KEY`.
+4. `npx prisma db push`
+5. `npm run start:dev`
 
-2. Create a virtual environment:
-   ```bash
-   python -m venv venv
-   venv\Scripts\activate
-   ```
+### Frontend
+1. `cd frontend`
+2. `npm install`
+3. `npm run dev`
 
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+### Mobile
+1. Ensure Flutter is installed.
+2. `flutter pub get`
+3. `flutter run`
 
-4. Configure environment variables:
-   Create a `.env` file in the `backend` directory with the following variables:
-   ```env
-   DATABASE_URL=postgresql://user:password@host:port/database
-   GEMINI_API_KEY=your-gemini-api-key
-   JWT_SECRET=your-jwt-secret
-   ```
-
-5. Initialize the database:
-   ```bash
-   python seed.py
-   ```
-
-## Usage
-
-Run the development server:
-```bash
-uvicorn main:app --reload
-```
-
-The API will be available at `http://localhost:8000`.
-
-## API Endpoints
-
-### Authentication
-
-- `POST /auth/register`: Register a new user
-- `POST /auth/login`: Login and get JWT token
-
-### Career Guidance
-
-- `POST /career/recommend`: Get career recommendations
-- `POST /career/skills`: Analyze skills and get gap analysis
-
-## License
-
+## 📄 License
 This project is licensed under the MIT License.

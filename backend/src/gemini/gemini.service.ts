@@ -49,7 +49,9 @@ export class GeminiService {
       if (Array.isArray(parsed)) return parsed.slice(0, 25);
       throw new Error('Invalid JSON format from AI');
     } catch (error) {
-      console.error('Error generating questions:', error);
+      console.warn('⚠️ Gemini API Question Generation Failed. Falling back to Mock Data.');
+      console.error('Gemini Error:', error.message || error);
+      
       // First 25-question Fallback set (RIASEC balanced)
       return [
         { id: 'fb_1', text: 'Which activity would you prefer on a weekend morning?', emoji: '🎨', options: [{ text: 'Fixing a bike or building something', category: 'R' }, { text: 'Reading a science journal', category: 'I' }, { text: 'Painting or playing music', category: 'A' }, { text: 'Helping at a community shelter', category: 'S' }] },
@@ -106,8 +108,9 @@ export class GeminiService {
       const response = await result.response;
       return response.text().trim();
     } catch (error) {
-      console.error('Error generating guidance:', error);
-      return 'Based on your results, you have strong inclinations towards your top categories. We recommend exploring the suggested careers above, which align with your unique interests and strengths!';
+      console.warn('⚠️ Gemini API Guidance Generation Failed. Falling back to Mock Summary.');
+      console.error('Gemini Error:', error.message || error);
+      return 'Based on your results, you show a strong aptitude in these areas. Explore your recommended careers to see specific pathways and next steps tailored to your profile.';
     }
   }
 }
