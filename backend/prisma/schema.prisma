@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  createdAt    DateTime @default(now())
+
+  @@map("users")
+}
+
+model Question {
+  id       String  @id
+  text     String
+  category String? // For static questions
+  emoji    String
+
+  @@map("questions")
+}
+
+model Career {
+  code            String  @id
+  title           String
+  emoji           String
+  description     String
+  stream          String
+  salary          String
+  growth          String
+  education       String
+  class11Subjects String  @map("class_11_subjects")
+  riasecCodes     String  @map("riasec_codes")
+  skills          String
+  topColleges     String  @map("top_colleges")
+  brightOutlook   Boolean @default(false) @map("bright_outlook")
+
+  @@map("careers")
+}

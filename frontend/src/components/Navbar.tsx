@@ -20,20 +20,23 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="glass">
-      <div className="logo">
-        <Link href="/">Future Next.</Link>
-      </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-        <Link href="/" style={{ fontWeight: 600, color: 'var(--primary)' }}>Home</Link>
+    <nav>
+      <Link href="/" className="logo-wrapper">
+        <div className="logo-icon">🧭</div>
+        <div className="logo-text">
+          Future<span>Next</span><span className="logo-dot">.</span>
+        </div>
+      </Link>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
+        <Link href="/" className="nav-link">Home</Link>
         {isLoggedIn ? (
           <>
             <Link href="/quiz" className="btn btn-primary">Take Quiz</Link>
-            <button onClick={handleLogout} className="btn" style={{ fontWeight: 600, color: 'var(--coral)', background: 'transparent' }}>Logout</button>
+            <button onClick={handleLogout} className="btn" style={{ fontWeight: 700, color: 'var(--coral)', background: 'transparent', padding: '0 8px' }}>Logout</button>
           </>
         ) : (
           <>
-            <Link href="/login" style={{ fontWeight: 600, color: 'var(--primary)' }}>Login</Link>
+            <Link href="/login" className="nav-link">Login</Link>
             <Link href="/signup" className="btn btn-primary">Sign Up</Link>
           </>
         )}

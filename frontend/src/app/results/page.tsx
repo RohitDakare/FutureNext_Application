@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import styles from "./results.module.css";
 import { RIASEC_TYPES, type RiasecCode } from "@/lib/riasec";
 import SimpleRadarChart from "@/components/SimpleRadarChart";
+import ReactMarkdown from "react-markdown";
 
 interface Career {
   title: string;
@@ -125,7 +126,9 @@ export default function Results() {
             <span aria-hidden="true">✨</span>
             <span>AI Personalized Guidance</span>
           </div>
-          <div className={styles.aiBody}>{res.career_guidance}</div>
+          <div className={styles.aiBody}>
+            <ReactMarkdown>{res.career_guidance || ""}</ReactMarkdown>
+          </div>
         </div>
       )}
 
