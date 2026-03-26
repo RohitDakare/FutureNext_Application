@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=production
+      - CORS_ORIGINS=["http://localhost:3000","http://195.35.23.26"] # Set appropriate origins
+    volumes:
+      - futurenex_db:/app/futurenext.db
+    restart: always
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://195.35.23.26:8000/api
+    depends_on:
+      - backend
+    restart: always
+
+volumes:
+  futurenex_db:

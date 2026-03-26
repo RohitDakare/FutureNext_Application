@@ -1,0 +1,150 @@
+.page {
+  min-height: 100vh;
+  background: var(--surface);
+  padding: 0 28px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content {
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.logoCircle {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 32px;
+  border-radius: 999px;
+  background: #EBF0FF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.title {
+  text-align: center;
+  font-family: "Sora", system-ui, -apple-system, sans-serif;
+  font-size: 30px;
+  font-weight: 900;
+  color: var(--ink);
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 15px;
+  color: #667788;
+  margin-top: 8px;
+}
+
+.errorBox {
+  margin: 0 0 16px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #FECACA;
+  background: #FEE2E2;
+  color: #B91C1C;
+  text-align: center;
+  font-weight: 600;
+}
+
+.fieldWrap {
+  background: white;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  padding: 18px 16px;
+}
+
+.fieldIcon {
+  width: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8899AA;
+  font-size: 18px;
+  margin-right: 10px;
+}
+
+.input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 15px;
+  color: var(--ink);
+}
+
+.input::placeholder {
+  color: rgba(136, 153, 170, 0.9);
+}
+
+.primaryButton {
+  height: 62px;
+  width: 100%;
+  border: none;
+  border-radius: 18px;
+  background: var(--ink);
+  color: white;
+  font-weight: 900;
+  font-family: "DM Sans", system-ui, -apple-system, sans-serif;
+  font-size: 17px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.primaryButton:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.footerText {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 15px;
+  color: rgba(13, 27, 42, 0.55);
+}
+
+.footerLink {
+  color: var(--ink);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.backLink {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  color: var(--ink);
+  font-weight: 900;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.35);
+  border-top-color: rgba(255, 255, 255, 1);
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+

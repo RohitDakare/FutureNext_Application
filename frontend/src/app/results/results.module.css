@@ -1,0 +1,268 @@
+.shell {
+  min-height: 100vh;
+  background: #F0F2F8;
+  padding-bottom: 80px;
+}
+
+.shareBtn {
+  position: fixed;
+  top: 48px;
+  right: 16px;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  background: white;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+}
+
+.header {
+  padding: 60px 24px 0;
+  text-align: center;
+}
+
+.kicker {
+  font-size: 16px;
+  font-weight: 600;
+  color: #667788;
+  margin-bottom: 16px;
+}
+
+.hollandBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 40px;
+  background: var(--ink);
+  color: var(--accent);
+  border-radius: 28px;
+  box-shadow: 0 30px 50px rgba(255, 182, 39, 0.25);
+  font-weight: 900;
+  font-size: 64px;
+  letter-spacing: 8px;
+}
+
+.personalTitle {
+  margin-top: 24px;
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--ink);
+}
+
+.personalText {
+  margin: 12px auto 0;
+  max-width: 900px;
+  font-size: 17px;
+  color: var(--ink);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.radarWrap {
+  height: 320px;
+  padding: 40px 16px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.aiCard {
+  margin: 32px 24px 0;
+  background: white;
+  border-radius: 24px;
+  border: 1px solid rgba(26, 26, 46, 0.08);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.03);
+  padding: 24px;
+}
+
+.aiHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  color: var(--ink);
+  font-size: 17px;
+}
+
+.aiBody {
+  margin-top: 16px;
+  color: #445566;
+  font-size: 15px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.topTypes {
+  margin-top: 32px;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media (min-width: 900px) {
+  .topTypes {
+    flex-direction: row;
+  }
+}
+
+.riasecCard {
+  background: white;
+  border-radius: 28px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  flex: 1;
+}
+
+.riasecHeader {
+  padding: 20px;
+}
+
+.riasecHeaderRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.riasecEmoji {
+  font-size: 32px;
+}
+
+.riasecName {
+  color: white;
+  font-weight: 900;
+  font-size: 20px;
+}
+
+.riasecTagline {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.riasecBody {
+  padding: 20px;
+}
+
+.riasecBodyTitle {
+  font-weight: 900;
+  font-size: 14px;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.riasecDescription {
+  font-size: 15px;
+  color: #4A5568;
+  line-height: 1.4;
+  margin-bottom: 16px;
+}
+
+.traits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.traitChip {
+  border-radius: 12px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.activitiesTitle {
+  font-size: 14px;
+  font-weight: 900;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.activitiesList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.activityRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: #4A5568;
+  font-size: 14px;
+}
+
+.activityIcon {
+  margin-top: 2px;
+  font-size: 16px;
+}
+
+.streamCard {
+  margin: 40px 24px 0;
+  padding: 28px;
+  border-radius: 28px;
+  background: #FFF8EC;
+  border: 1px solid rgba(255, 182, 39, 0.25);
+  text-align: center;
+}
+
+.streamTitle {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+
+.streamValue {
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--ink);
+}
+
+.streamDesc {
+  margin-top: 12px;
+  color: #667788;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.cta {
+  margin-top: 40px;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: stretch;
+}
+
+.ctaPrimaryButton {
+  height: 62px;
+  background: var(--ink);
+  color: white;
+  border: none;
+  border-radius: 18px;
+  font-weight: 900;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+.ctaTextButton {
+  border: none;
+  background: transparent;
+  color: #667788;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 8px 0;
+}
