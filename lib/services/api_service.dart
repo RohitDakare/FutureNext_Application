@@ -43,15 +43,22 @@ class ApiService {
       headers: {"Content-Type": "application/json"},
       body: jsonEncode({"email": email, "password": password}),
     );
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
       final data = jsonDecode(response.body);
       final token = data['access_token'];
+      if (token == null) {
+        throw Exception("Invalid server response: token not found");
+      }
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('access_token', token);
       return token;
     } else {
-      final data = jsonDecode(response.body);
-      throw Exception(data['message'] ?? data['detail'] ?? "Login failed");
+      try {
+        final data = jsonDecode(response.body);
+        throw Exception(data['message'] ?? data['detail'] ?? "Login failed");
+      } catch (e) {
+        throw Exception("Login failed: ${response.statusCode} - ${response.body}");
+      }
     }
   }
 

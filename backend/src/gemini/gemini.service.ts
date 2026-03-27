@@ -6,11 +6,16 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 export class GeminiService {
   private genAI: GoogleGenerativeAI;
   private model: any;
+  private jsonModel: any;
 
   constructor(private configService: ConfigService) {
     const apiKey = this.configService.get<string>('GEMINI_API_KEY') || 'dummy_key';
     this.genAI = new GoogleGenerativeAI(apiKey);
     this.model = this.genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    this.jsonModel = this.genAI.getGenerativeModel({
+      model: 'gemini-1.5-flash-8b',
+      generationConfig: { responseMimeType: 'application/json' },
+    });
   }
 
   async generateDynamicQuestions(previousQuestions: string[]) {
@@ -39,7 +44,7 @@ export class GeminiService {
     `;
 
     try {
-      const result = await this.model.generateContent(prompt);
+      const result = await this.jsonModel.generateContent(prompt);
       const response = await result.response;
       let text = response.text().trim();
       
