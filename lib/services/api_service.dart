@@ -7,7 +7,8 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 
 class ApiService {
   // static const String baseUrl = "https://future-next.onrender.com/api";
-  static const String baseUrl = "https://future-next.onrender.com/api";
+  // static const String baseUrl = "https://future-next.onrender.com/api";
+  static const String baseUrl = "https://futurenext-application.onrender.com/api";
 
   static Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
@@ -29,7 +30,7 @@ class ApiService {
       headers: {"Content-Type": "application/json"},
       body: jsonEncode({"email": email, "password": password}),
     );
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
       return jsonDecode(response.body);
     } else {
       throw Exception(jsonDecode(response.body)['detail'] ?? "Signup failed");
@@ -39,7 +40,8 @@ class ApiService {
   static Future<String> login(String email, String password) async {
     final response = await http.post(
       Uri.parse("$baseUrl/login"),
-      body: {"username": email, "password": password},
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({"email": email, "password": password}),
     );
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -48,7 +50,8 @@ class ApiService {
       await prefs.setString('access_token', token);
       return token;
     } else {
-      throw Exception(jsonDecode(response.body)['detail'] ?? "Login failed");
+      final data = jsonDecode(response.body);
+      throw Exception(data['message'] ?? data['detail'] ?? "Login failed");
     }
   }
 

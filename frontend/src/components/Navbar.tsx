@@ -27,17 +27,17 @@ export default function Navbar() {
           Future<span>Next</span><span className="logo-dot">.</span>
         </div>
       </Link>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
-        <Link href="/" className="nav-link">Home</Link>
+      <div className="nav-actions">
+        <Link href="/" className="nav-link home-link">Home</Link>
         {isLoggedIn ? (
           <>
-            <Link href="/quiz" className="btn btn-primary">Take Quiz</Link>
-            <button onClick={handleLogout} className="btn" style={{ fontWeight: 700, color: 'var(--coral)', background: 'transparent', padding: '0 8px' }}>Logout</button>
+            <Link href="/quiz" className="btn btn-primary nav-btn">Take Quiz</Link>
+            <button onClick={handleLogout} className="btn nav-logout">Logout</button>
           </>
         ) : (
           <>
-            <Link href="/login" className="nav-link">Login</Link>
-            <Link href="/signup" className="btn btn-primary">Sign Up</Link>
+            <Link href="/login" className="nav-link login-link">Login</Link>
+            <Link href="/signup" className="btn btn-primary nav-btn">Sign Up</Link>
           </>
         )}
       </div>

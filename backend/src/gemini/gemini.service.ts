@@ -16,6 +16,9 @@ export class GeminiService {
   async generateDynamicQuestions(previousQuestions: string[]) {
     const prompt = `
     You are an expert career counselor. Generate exactly 25 unique multiple-choice questions for a career interest test.
+    Crucial: Make the questions completely fresh, creative, and randomized. Draw inspiration from varied unconventional topics, modern tech, arts, sports, daily life, hobbies, etc.
+    Always try to give completely different questions from previous interactions. (Randomness Seed: ${Math.random()}).
+    
     Each question should be a scenario or preference question.
     Each question should have 4 unique options.
     Each option must be associated with one of the 6 RIASEC categories (Realistic, Investigative, Artistic, Social, Enterprising, Conventional).
@@ -49,7 +52,9 @@ export class GeminiService {
       if (Array.isArray(parsed)) return parsed.slice(0, 25);
       throw new Error('Invalid JSON format from AI');
     } catch (error) {
-      console.error('Error generating questions:', error);
+      console.warn('⚠️ Gemini API Question Generation Failed. Falling back to Mock Data.');
+      console.error('Gemini Error:', error.message || error);
+      
       // First 25-question Fallback set (RIASEC balanced)
       return [
         { id: 'fb_1', text: 'Which activity would you prefer on a weekend morning?', emoji: '🎨', options: [{ text: 'Fixing a bike or building something', category: 'R' }, { text: 'Reading a science journal', category: 'I' }, { text: 'Painting or playing music', category: 'A' }, { text: 'Helping at a community shelter', category: 'S' }] },
@@ -106,8 +111,13 @@ export class GeminiService {
       const response = await result.response;
       return response.text().trim();
     } catch (error) {
-      console.error('Error generating guidance:', error);
-      return 'Based on your results, you have strong inclinations towards your top categories. We recommend exploring the suggested careers above, which align with your unique interests and strengths!';
+      console.warn('⚠️ Gemini API Guidance Generation Failed. Falling back to Mock Summary.');
+      console.error('Gemini Error:', error.message || error);
+      
+      const fallbackCareers = recommendedCareers.map(c => c.title).slice(0, 3).join(', ');
+      const fallbackStream = recommendedCareers[0]?.stream || 'Science/Humanities/Commerce';
+      
+      return `### ✨ Personalized Career Guidance\n\nYour top personality traits are **${topCategories.join('-')}**. People with this combination possess a unique and powerful mix of talents suited for the modern world.\n\n### 🚀 Recommended Career Pathways\nBased on your scores, careers like **${fallbackCareers}** align perfectly with your natural aptitudes. These fields heavily reward your dominant characteristics.\n\n### 🎓 Suggested Streams & Education\nTo pursue these careers, you should consider the **${fallbackStream}** stream in Class 11/12. Follow this with a relevant degree to build your expertise.\n\n### 🎯 Action Steps\n1. **Research** the daily life of professionals in ${recommendedCareers[0]?.title || 'your top career'}.\n2. **Join a club or take an online course** related to your top interests to build early skills.\n3. **Speak to a counselor, teacher, or professional** in the field to get real-world insights.`;
     }
   }
 }

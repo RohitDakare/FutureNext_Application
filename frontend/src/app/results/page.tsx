@@ -69,7 +69,22 @@ export default function Results() {
   const dominantType = topTypes[0] ?? RIASEC_TYPES.R;
   const topTypeNames = topTypes.map((t) => t.name).join("-");
 
-  const recommendedStream = dominantType.recommendedStream;
+  const streamCounts: Record<string, number> = {};
+  res.recommended_careers?.forEach((c) => {
+    if (c.stream) {
+      streamCounts[c.stream] = (streamCounts[c.stream] || 0) + 1;
+    }
+  });
+
+  let bestStream = dominantType.recommendedStream;
+  let maxCount = 0;
+  for (const [stream, count] of Object.entries(streamCounts)) {
+    if (count > maxCount) {
+      maxCount = count;
+      bestStream = stream;
+    }
+  }
+  const recommendedStream = bestStream;
 
   const handleShare = async () => {
     const nameStr = "my";

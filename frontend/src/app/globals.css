@@ -107,6 +107,7 @@ h1, h2, h3 {
   transition: all 0.3s ease;
   border: none;
   text-transform: capitalize;
+  text-decoration: none;
 }
 
 .btn-primary {
@@ -209,9 +210,39 @@ nav {
   }
 
   /* Hide home link on mobile to save space */
-  nav .nav-link:first-child {
+  nav .home-link {
     display: none;
   }
+
+  nav .nav-actions {
+    gap: 12px;
+  }
+
+  nav .nav-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  nav .nav-logout {
+    padding: 0 4px;
+    font-size: 0.85rem;
+  }
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.nav-logout {
+  font-weight: 700;
+  color: var(--coral);
+  background: transparent;
+  padding: 0 8px;
+}
+.nav-logout:hover {
+  background: rgba(255, 107, 107, 0.1);
 }
 
 nav:hover {
