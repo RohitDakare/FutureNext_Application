@@ -17,11 +17,16 @@ let GeminiService = class GeminiService {
     configService;
     genAI;
     model;
+    jsonModel;
     constructor(configService) {
         this.configService = configService;
         const apiKey = this.configService.get('GEMINI_API_KEY') || 'dummy_key';
         this.genAI = new generative_ai_1.GoogleGenerativeAI(apiKey);
         this.model = this.genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+        this.jsonModel = this.genAI.getGenerativeModel({
+            model: 'gemini-1.5-flash-8b',
+            generationConfig: { responseMimeType: 'application/json' },
+        });
     }
     async generateDynamicQuestions(previousQuestions) {
         const prompt = `
@@ -48,7 +53,7 @@ let GeminiService = class GeminiService {
     Ensure the response is raw JSON without Markdown formatting backticks.
     `;
         try {
-            const result = await this.model.generateContent(prompt);
+            const result = await this.jsonModel.generateContent(prompt);
             const response = await result.response;
             let text = response.text().trim();
             if (text.startsWith('```json'))
