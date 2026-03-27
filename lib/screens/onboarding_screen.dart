@@ -7,6 +7,7 @@ import '../theme/app_colors.dart';
 import '../widgets/glass_card.dart';
 import '../providers/quiz_provider.dart';
 import 'quiz_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -190,6 +191,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             final provider = context.read<QuizProvider>();
                             provider.setUserProfile(name, _selectedGrade);
                             provider.startDynamicQuiz();
+                            SharedPreferences.getInstance().then((prefs) => prefs.setBool('isOnboarded', true));
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(builder: (context) => const QuizScreen()),
@@ -238,12 +240,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final List<String> _grades = ['Class 8', 'Class 9', 'Class 10', 'Class 11', 'Class 12'];
 
   Widget _buildProfileSlide() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 40),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
             width: 140,
             height: 140,
             decoration: BoxDecoration(
@@ -306,6 +309,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
           ).animate().fadeIn(delay: 350.ms).slideY(begin: 0.1, end: 0),
         ],
+      ),
       ),
     );
   }

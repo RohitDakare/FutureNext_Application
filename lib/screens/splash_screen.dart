@@ -7,6 +7,8 @@ import '../theme/app_colors.dart';
 import '../widgets/glass_card.dart';
 import 'onboarding_screen.dart';
 import 'results_screen.dart';
+import 'quiz_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -19,10 +21,26 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    _handleRouting();
+  }
+
+  void _handleRouting() async {
+    final prefs = await SharedPreferences.getInstance();
+    final isOnboarded = prefs.getBool('isOnboarded') ?? false;
+
     Timer(const Duration(milliseconds: 2800), () {
       if (mounted) {
         final provider = context.read<QuizProvider>();
-        final target = provider.isQuizComplete ? const ResultsScreen() : const OnboardingScreen();
+        
+        Widget target;
+        if (provider.isQuizComplete) {
+          target = const ResultsScreen();
+        } else if (isOnboarded) {
+          provider.startDynamicQuiz();
+          target = const QuizScreen();
+        } else {
+          target = const OnboardingScreen();
+        }
         
         Navigator.of(context).pushReplacement(
           PageRouteBuilder(
