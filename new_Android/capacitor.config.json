@@ -1,0 +1,9 @@
+{
+  "appId": "com.futurenext.app",
+  "appName": "Future Next",
+  "webDir": "www",
+  "server": {
+    "url": "https://future-next-application-37ea.vercel.app/",
+    "cleartext": true
+  }
+}
