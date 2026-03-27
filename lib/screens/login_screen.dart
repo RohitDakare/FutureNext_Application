@@ -24,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     try {
-      await ApiService.login(_emailController.text.trim(), _passwordController.text.trim());
+      await ApiService.login(_emailController.text.trim(), _passwordController.text);
       if (mounted) {
         Navigator.pushReplacement(
           context,
