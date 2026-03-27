@@ -3,6 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import '../services/api_service.dart';
 import 'signup_screen.dart';
 import 'onboarding_screen.dart';
+import 'splash_screen.dart';
+import 'quiz_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -28,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (mounted) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const OnboardingScreen()),
+          MaterialPageRoute(builder: (context) => const SplashScreen()),
         );
       }
     } catch (e) {
