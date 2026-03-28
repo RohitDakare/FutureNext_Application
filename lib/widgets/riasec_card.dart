@@ -100,10 +100,16 @@ class RIASECCard extends StatelessWidget {
                 ...type.activities.map((act) => Padding(
                   padding: const EdgeInsets.only(bottom: 4),
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(Icons.check_circle_rounded, size: 16, color: type.color),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 2),
+                        child: Icon(Icons.check_circle_rounded, size: 16, color: type.color),
+                      ),
                       const SizedBox(width: 8),
-                      Text(act, style: const TextStyle(color: AppColors.textMid)),
+                      Expanded(
+                        child: Text(act, style: const TextStyle(color: AppColors.textMid)),
+                      ),
                     ],
                   ),
                 )),

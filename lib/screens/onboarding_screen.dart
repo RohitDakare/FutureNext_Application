@@ -92,60 +92,69 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     if (slide.isProfile) {
                       return _buildProfileSlide();
                     }
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 40),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // Illustrated Icon
-                          Container(
-                            width: 200,
-                            height: 200,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: slide.circleBgColor,
-                            ),
-                            child: Center(
-                              child: Text(
-                                slide.emoji,
-                                style: const TextStyle(fontSize: 100),
-                              ),
-                            ),
-                          )
-                          .animate(key: ValueKey(index))
-                          .scale(duration: 700.ms, curve: Curves.elasticOut),
+                    return LayoutBuilder(
+                      builder: (context, constraints) {
+                        final h = constraints.maxHeight;
+                        final circleSize = (h * 0.32).clamp(120.0, 220.0);
+                        final emojiFontSize = (circleSize * 0.5).clamp(60.0, 110.0);
+                        final titleFontSize = (h * 0.055).clamp(22.0, 34.0);
+                        final bodyFontSize = (h * 0.032).clamp(14.0, 18.0);
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 40),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // Illustrated Icon
+                              Container(
+                                width: circleSize,
+                                height: circleSize,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: slide.circleBgColor,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    slide.emoji,
+                                    style: TextStyle(fontSize: emojiFontSize),
+                                  ),
+                                ),
+                              )
+                              .animate(key: ValueKey(index))
+                              .scale(duration: 700.ms, curve: Curves.elasticOut),
 
-                          const SizedBox(height: 56),
+                              SizedBox(height: h * 0.07),
 
-                          Text(
-                            slide.title,
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.dmSans(
-                              fontSize: 32,
-                              fontWeight: FontWeight.w900,
-                              color: const Color(0xFF1A1A2E),
-                              height: 1.1,
-                            ),
-                          )
-                          .animate(key: ValueKey('t$index'))
-                          .fadeIn(duration: 500.ms)
-                          .slideY(begin: 0.2, end: 0, duration: 500.ms),
+                              Text(
+                                slide.title,
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.dmSans(
+                                  fontSize: titleFontSize,
+                                  fontWeight: FontWeight.w900,
+                                  color: const Color(0xFF1A1A2E),
+                                  height: 1.1,
+                                ),
+                              )
+                              .animate(key: ValueKey('t$index'))
+                              .fadeIn(duration: 500.ms)
+                              .slideY(begin: 0.2, end: 0, duration: 500.ms),
 
-                          const SizedBox(height: 20),
+                              SizedBox(height: h * 0.025),
 
-                          Text(
-                            slide.description,
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.dmSans(
-                              color: const Color(0xFF667788),
-                              fontSize: 17,
-                              height: 1.5,
-                            ),
-                          )
-                          .animate(key: ValueKey('d$index'))
-                          .fadeIn(duration: 500.ms, delay: 150.ms),
-                        ],
-                      ),
+                              Text(
+                                slide.description,
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.dmSans(
+                                  color: const Color(0xFF667788),
+                                  fontSize: bodyFontSize,
+                                  height: 1.5,
+                                ),
+                              )
+                              .animate(key: ValueKey('d$index'))
+                              .fadeIn(duration: 500.ms, delay: 150.ms),
+                            ],
+                          ),
+                        );
+                      },
                     );
                   },
                 ),
@@ -153,7 +162,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
               // Footer
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 32),
+                padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 20),
                 child: Column(
                   children: [
                     SmoothPageIndicator(
@@ -168,11 +177,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         spacing: 6,
                       ),
                     ),
-                    const SizedBox(height: 32),
-                    
+                    const SizedBox(height: 20),
                     SizedBox(
                       width: double.infinity,
-                      height: 62,
+                      height: 56,
                       child: ElevatedButton(
                         onPressed: () {
                           if (_currentPage < 3) {

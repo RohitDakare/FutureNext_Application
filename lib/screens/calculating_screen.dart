@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:provider/provider.dart';
+import '../providers/quiz_provider.dart';
 import '../theme/app_colors.dart';
 import '../widgets/glass_card.dart';
 import 'results_screen.dart';
@@ -21,6 +23,7 @@ class _CalculatingScreenState extends State<CalculatingScreen> {
     "Almost there! 🎉",
   ];
   late Timer _timer;
+  bool _navigated = false;
 
   @override
   void initState() {
@@ -34,8 +37,46 @@ class _CalculatingScreenState extends State<CalculatingScreen> {
       }
     });
 
-    // Auto-navigate after 2.5 seconds
-    Future.delayed(const Duration(milliseconds: 2500), () {
+    // Wait for the provider to finish computing the result (isQuizComplete),
+    // then navigate. Use a short minimum delay so the animation plays briefly.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _waitForResult();
+    });
+  }
+
+  void _waitForResult() {
+    final provider = Provider.of<QuizProvider>(context, listen: false);
+    if (provider.isQuizComplete) {
+      _goToResults();
+    } else {
+      // Poll every 300ms until complete, with a safety cap of 30s
+      _pollForResult(DateTime.now());
+    }
+  }
+
+  void _pollForResult(DateTime startTime) {
+    if (!mounted || _navigated) return;
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (!mounted || _navigated) return;
+      final provider = Provider.of<QuizProvider>(context, listen: false);
+      final elapsed = DateTime.now().difference(startTime);
+      if (provider.isQuizComplete) {
+        _goToResults();
+      } else if (elapsed.inSeconds >= 30) {
+        // Safety fallback after 30s — navigate anyway
+        _goToResults();
+      } else {
+        _pollForResult(startTime);
+      }
+    });
+  }
+
+  void _goToResults() {
+    if (_navigated || !mounted) return;
+    _navigated = true;
+    // Ensure minimum 900ms animation time
+    final delay = const Duration(milliseconds: 900);
+    Future.delayed(delay, () {
       if (mounted) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const ResultsScreen()),

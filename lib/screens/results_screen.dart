@@ -13,6 +13,7 @@ import '../widgets/riasec_card.dart';
 import 'chat_screen.dart';
 import 'quiz_screen.dart';
 import 'careers_screen.dart';
+import 'analysis_report_screen.dart';
 
 class ResultsScreen extends StatefulWidget {
   const ResultsScreen({super.key});
@@ -264,25 +265,52 @@ class _ResultsScreenState extends State<ResultsScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: Column(
                     children: [
+                      // Primary: Detailed Analysis Report
                       SizedBox(
                         width: double.infinity,
                         height: 62,
-                        child: ElevatedButton(
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const AnalysisReportScreen()),
+                            );
+                          },
+                          icon: const Icon(Icons.analytics_rounded),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.accent,
+                            foregroundColor: const Color(0xFF1A1A2E),
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+                          ),
+                          label: Text(
+                            "View Detailed Analysis Report",
+                            style: GoogleFonts.dmSans(fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 14),
+                      // Secondary: Explore Careers
+                      SizedBox(
+                        width: double.infinity,
+                        height: 54,
+                        child: ElevatedButton.icon(
                           onPressed: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(builder: (context) => const CareersScreen()),
                             );
                           },
+                          icon: const Icon(Icons.explore_rounded),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF1A1A2E),
                             foregroundColor: Colors.white,
                             elevation: 0,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
                           ),
-                          child: Text(
-                            "Explore Your Careers ✨",
-                            style: GoogleFonts.dmSans(fontSize: 17, fontWeight: FontWeight.bold),
+                          label: Text(
+                            "Explore All Careers ✨",
+                            style: GoogleFonts.dmSans(fontSize: 15, fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),

@@ -43,39 +43,48 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final logoSize = (screenHeight * 0.1).clamp(60.0, 100.0);
+    final logoFontSize = (logoSize * 0.5).clamp(28.0, 48.0);
+
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FF),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 28.0),
+        child: SingleChildScrollView(
+          physics: const ClampingScrollPhysics(),
+          padding: EdgeInsets.symmetric(
+            horizontal: 28.0,
+            vertical: screenHeight * 0.04,
+          ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               // Logo
-              Container(
-                width: 80,
-                height: 80,
-                margin: const EdgeInsets.only(bottom: 32),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: const Color(0xFFEBF0FF),
-                ),
-                child: const Center(
-                  child: Text('🧭', style: TextStyle(fontSize: 40)),
+              Center(
+                child: Container(
+                  width: logoSize,
+                  height: logoSize,
+                  margin: const EdgeInsets.only(bottom: 24),
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Color(0xFFEBF0FF),
+                  ),
+                  child: Center(
+                    child: Text('🧭', style: TextStyle(fontSize: logoFontSize)),
+                  ),
                 ),
               ),
-              
+
               Text(
                 'Welcome Back!',
                 textAlign: TextAlign.center,
                 style: GoogleFonts.dmSans(
-                  fontSize: 30,
+                  fontSize: (screenHeight * 0.038).clamp(22.0, 32.0),
                   fontWeight: FontWeight.w900,
                   color: const Color(0xFF1A1A2E),
                 ),
               ),
-              
+
               const SizedBox(height: 8),
 
               Text(
@@ -87,8 +96,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
 
-              const SizedBox(height: 40),
-              
+              SizedBox(height: screenHeight * 0.04),
+
               if (_error != null)
                 Container(
                   margin: const EdgeInsets.only(bottom: 16),
@@ -98,9 +107,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(color: Colors.red.shade200),
                   ),
-                  child: Text(_error!, style: TextStyle(color: Colors.red.shade700), textAlign: TextAlign.center),
+                  child: Text(
+                    _error!,
+                    style: TextStyle(color: Colors.red.shade700),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-              
+
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -119,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     filled: true,
                     fillColor: Colors.white,
-                    contentPadding: const EdgeInsets.symmetric(vertical: 18),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 16),
                   ),
                 ),
               ),
@@ -144,15 +157,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     filled: true,
                     fillColor: Colors.white,
-                    contentPadding: const EdgeInsets.symmetric(vertical: 18),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 16),
                   ),
                 ),
               ),
-              
+
               const SizedBox(height: 24),
-              
+
               SizedBox(
-                height: 62,
+                height: 58,
                 child: ElevatedButton(
                   onPressed: _loading ? null : _handleLogin,
                   style: ElevatedButton.styleFrom(
@@ -164,16 +177,18 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   child: _loading
-                    ? const CircularProgressIndicator(color: Colors.white, strokeWidth: 2)
-                    : Text(
-                        'Log In',
-                        style: GoogleFonts.dmSans(fontSize: 17, fontWeight: FontWeight.bold),
-                      ),
+                      ? const CircularProgressIndicator(
+                          color: Colors.white, strokeWidth: 2)
+                      : Text(
+                          'Log In',
+                          style: GoogleFonts.dmSans(
+                              fontSize: 17, fontWeight: FontWeight.bold),
+                        ),
                 ),
               ),
-              
-              const SizedBox(height: 16),
-              
+
+              const SizedBox(height: 12),
+
               TextButton(
                 onPressed: () => Navigator.push(
                   context,
