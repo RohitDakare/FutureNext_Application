@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/api_service.dart';
+import '../services/gemini_service.dart';
 import '../models/question.dart';
 import '../models/quiz_result.dart';
 import '../models/career.dart';
@@ -43,18 +44,38 @@ class QuizProvider with ChangeNotifier {
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
+
+    // 1️⃣ Try Gemini directly from the app (fastest, no backend needed)
+    try {
+      final geminiQuestions = await GeminiService.generateQuizQuestions();
+      if (geminiQuestions != null && geminiQuestions.isNotEmpty) {
+        _dynamicQuestions = geminiQuestions;
+        _answers.clear();
+        _currentQuestionIndex = 0;
+        _isQuizComplete = false;
+        _isLoading = false;
+        notifyListeners();
+        return;
+      }
+    } catch (_) {}
+
+    // 2️⃣ Try backend API as second option
     try {
       _dynamicQuestions = await ApiService.fetchDynamicQuestions([]);
-      _answers.clear();
-      _currentQuestionIndex = 0;
-      _isQuizComplete = false;
-    } catch (e) {
-      // Silently fall back to static questions — caller handles UI
-      _dynamicQuestions = [];
-    } finally {
-      _isLoading = false;
-      notifyListeners();
-    }
+      if (_dynamicQuestions.isNotEmpty) {
+        _answers.clear();
+        _currentQuestionIndex = 0;
+        _isQuizComplete = false;
+        _isLoading = false;
+        notifyListeners();
+        return;
+      }
+    } catch (_) {}
+
+    // 3️⃣ Last resort: static ONET questions
+    _dynamicQuestions = [];
+    _isLoading = false;
+    notifyListeners();
   }
 
   void setUserProfile(String name, String grade) {
@@ -85,36 +106,46 @@ class QuizProvider with ChangeNotifier {
     _errorMessage = null;
     notifyListeners();
 
+    // Always compute scores locally — fast and reliable
+    final raw = _computeRawScores();
+    final pct = _computePercentages(raw);
+    final sorted = pct.keys.toList()
+      ..sort((a, b) => (pct[b] ?? 0).compareTo(pct[a] ?? 0));
+    final topCats = sorted.take(3).toList();
+
+    // Get matched career titles for Gemini guidance prompt
+    final tempResult = QuizResult(
+      hollandCode: topCats.join(''),
+      rawScores: raw,
+      percentageScores: pct,
+      topPersonalityTypes: topCats,
+    );
+    final matchedCareers = getMatchedCareers(tempResult);
+    final careerTitles = matchedCareers.take(5).map((c) => c.title).toList();
+
+    // Request Gemini career guidance directly
+    String? guidance;
     try {
-      // Try to get AI-enhanced result from backend
-      final resultData = await ApiService.submitQuiz(_answers);
-
-      // Build percentage scores from raw backend scores (if provided)
-      final rawFromBackend = resultData['scores'] != null
-          ? Map<String, int>.from(resultData['scores'])
-          : _computeRawScores();
-
-      final pct = _computePercentages(rawFromBackend);
-      final topCats = List<String>.from(resultData['top_categories'] ?? []);
-
-      // If backend didn't return top_categories, derive from pct
-      if (topCats.isEmpty) {
-        final sorted = pct.keys.toList()
-          ..sort((a, b) => (pct[b] ?? 0).compareTo(pct[a] ?? 0));
-        topCats.addAll(sorted.take(3));
-      }
-
-      _persistedResult = QuizResult(
-        hollandCode: topCats.take(3).join(''),
-        rawScores: rawFromBackend,
-        percentageScores: pct,
-        topPersonalityTypes: topCats.take(3).toList(),
-        careerGuidance: resultData['career_guidance'],
+      guidance = await GeminiService.generateCareerGuidance(
+        scores: raw,
+        topCategories: topCats,
+        careerTitles: careerTitles,
       );
-    } catch (e) {
-      // Backend failed — compute locally from answers so user isn't stuck
-      _persistedResult = _computeLocalResult();
+    } catch (_) {
+      // If Gemini guidance fails, try the backend as fallback
+      try {
+        final resultData = await ApiService.submitQuiz(_answers);
+        guidance = resultData['career_guidance'];
+      } catch (_) {}
     }
+
+    _persistedResult = QuizResult(
+      hollandCode: topCats.join(''),
+      rawScores: raw,
+      percentageScores: pct,
+      topPersonalityTypes: topCats,
+      careerGuidance: guidance,
+    );
 
     await _saveResultLocally();
     _isLoading = false;
@@ -153,7 +184,7 @@ class QuizProvider with ChangeNotifier {
             (q) => q.id == questionId,
             orElse: () => throw StateError('not found'),
           );
-          final cat = q.category as String? ?? 'R';
+          final cat = q.category ?? 'R';
           raw[cat] = (raw[cat] ?? 0) + (answer - 1).clamp(0, 4);
         } catch (_) {
           // Dynamic question with Likert — try to derive from id prefix
